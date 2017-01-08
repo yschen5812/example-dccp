@@ -25,7 +25,9 @@ int main(int argc, char **argv)
 {
 	int listen_sock = socket(AF_INET, SOCK_DCCP, IPPROTO_DCCP);
 	if (listen_sock < 0)
+	{
 		error_exit("socket");
+	}
 
 	struct sockaddr_in servaddr = {
 		.sin_family = AF_INET,
@@ -35,18 +37,26 @@ int main(int argc, char **argv)
 
 	if (setsockopt(listen_sock, SOL_SOCKET, SO_REUSEADDR, &(int) {
 		       1}, sizeof(int)))
+	{
 		error_exit("setsockopt(SO_REUSEADDR)");
+	}
 
 	if (bind(listen_sock, (struct sockaddr *)&servaddr, sizeof(servaddr)))
+	{
 		error_exit("bind");
+	}
 	
 	//Sets the port and record code options required by DCCP
 	if (setsockopt(listen_sock, SOL_DCCP, DCCP_SOCKOPT_RECORD, &(int) {
 		       htonl(RECORD_CODE)}, sizeof(int)))
+	{
 		error_exit("setsockopt(DCCP_SOCKOPT_RECORD)");
+	}
 
 	if (listen(listen_sock, 1))
+	{
 		error_exit("listen");
+	}
 	//connection activity
 	for (;;) {
 
@@ -61,8 +71,7 @@ int main(int argc, char **argv)
 			continue;
 		}
 
-		printf("Connection received from %s:%d\n",
-		       inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
+		printf("Connection received from %s:%d\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
 
 		//Handles recieved datagram
 		for (;;) {
