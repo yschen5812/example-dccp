@@ -8,7 +8,7 @@
 #define SOL_DCCP                        269
 
 // From kernel's include/uapi/linux/dccp.h
-#define DCCP_SOCKOPT_SERVICE            2
+#define DCCP_SOCKOPT_RECORD             2
 #define DCCP_SOCKOPT_CHANGE_L           3
 #define DCCP_SOCKOPT_CHANGE_R           4
 #define DCCP_SOCKOPT_GET_CUR_MPS        5
