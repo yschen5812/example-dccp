@@ -23,5 +23,6 @@ int main()
 	{
 		printf(" %d", ccids[i]);
 	}
+	printf("\n");
 	return res_len;
 }
