@@ -2,9 +2,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/socket.h>
+#include <sys/types.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <errno.h>
+#include <ifaddrs.h>
 
 #include "../header/dccp.h"
 
@@ -57,6 +59,24 @@ int main(int argc, char **argv)
 	{
 		error_exit("listen");
 	}
+
+
+	//get IP address.
+	struct ifaddrs *ifap, *ifa;
+    struct sockaddr_in *sa;
+    char *addr;
+
+    getifaddrs (&ifap);
+    for (ifa = ifap; ifa; ifa = ifa->ifa_next) {
+        if (ifa->ifa_addr->sa_family==AF_INET) {
+            sa = (struct sockaddr_in *) ifa->ifa_addr;
+            addr = inet_ntoa(sa->sin_addr);
+            printf("My interface: %s\tAddress: %s\n", ifa->ifa_name, addr);   
+}
+    }
+
+    freeifaddrs(ifap);	
+
 	//connection activity
 	for (;;) {
 
